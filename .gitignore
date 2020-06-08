@@ -1,0 +1,8 @@
+*.iml
+.idea
+/target/
+*/derby.log
+*/metastore_db/*
+.settings
+.project
+.DS_Store
