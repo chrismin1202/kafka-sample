@@ -12,27 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chrism.kafka
+package com.chrism.kafka.serde
 
-import java.{util => ju}
-
-import io.circe.{Encoder, Printer}
-import org.apache.kafka.common.serialization.Serializer
+import io.circe.{parser, Decoder, Encoder, Printer}
+import org.apache.kafka.common.serialization.{Deserializer, Serializer}
 
 abstract class JsonSerializer[A: Encoder](printer: Printer = JsonSerializer.DefaultPrinter) extends Serializer[A] {
-
-  override /* overridable */ def configure(configs: ju.Map[String, _], isKey: Boolean): Unit = {
-    // stubbed
-  }
 
   override def serialize(topic: String, data: A): Array[Byte] = {
     import io.circe.syntax._
 
     printer.print(data.asJson).getBytes("UTF-8")
-  }
-
-  override /* overridable */ def close(): Unit = {
-    // stubbed
   }
 }
 
@@ -40,4 +30,13 @@ object JsonSerializer {
 
   /** The default io.circe.Printer with null values dropped and no indentation */
   val DefaultPrinter: Printer = Printer(true, "")
+}
+
+abstract class JsonDeserializer[A: Decoder] extends Deserializer[A] {
+
+  override /* overridable */ def deserialize(topic: String, data: Array[Byte]): A =
+    parser.decode[A](new String(data, "UTF-8")) match {
+      case Left(err)  => throw err
+      case Right(obj) => obj
+    }
 }
