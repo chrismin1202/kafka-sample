@@ -14,24 +14,15 @@
  */
 package com.chrism.kafka
 
-import java.{util => ju}
+import com.chrism.commons.datatype.{CaseInsensitiveEnumLikeCompanionLike, EnumLike}
 
-import io.circe.{parser, Decoder}
-import org.apache.kafka.common.serialization.Deserializer
+sealed abstract class CleanupPolicy(override final val name: String) extends EnumLike
 
-abstract class JsonDeserializer[A: Decoder] extends Deserializer[A] {
+object CleanupPolicy extends CaseInsensitiveEnumLikeCompanionLike[CleanupPolicy] {
 
-  override /* overridable */ def configure(configs: ju.Map[String, _], isKey: Boolean): Unit = {
-    // stubbed
-  }
+  override lazy val values: IndexedSeq[CleanupPolicy] = IndexedSeq(Compact, Delete)
 
-  override /* overridable */ def deserialize(topic: String, data: Array[Byte]): A =
-    parser.decode[A](new String(data, "UTF-8")) match {
-      case Left(err)  => throw err
-      case Right(obj) => obj
-    }
+  case object Compact extends CleanupPolicy("compact")
 
-  override /* overridable */ def close(): Unit = {
-    // stubbed
-  }
+  case object Delete extends CleanupPolicy("delete")
 }

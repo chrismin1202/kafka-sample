@@ -17,7 +17,7 @@ package com.chrism.kafka
 import com.chrism.commons.FunTestSuite
 import com.chrism.commons.util.WithResource
 import com.chrism.log.LoggingLike
-import com.chrism.net.{HostPort, LocalhostPort, PortDetector}
+import com.chrism.net.{HostPort, LocalHostPort, PortDetector}
 import com.chrism.util.{ImmutableProperties, PropertiesBuilder, RandomUtils}
 import kafka.server.{KafkaConfig, KafkaServer}
 import org.apache.kafka.common.security.auth.SecurityProtocol
@@ -48,8 +48,8 @@ trait KafkaTestSuiteLike {
         zk.hostPort.port === zooKeeperPort,
         s"The ZooKeeper ports do not match: $zooKeeperPort (specified) vs. ${zk.hostPort.port} (actual)")
 
-      val kafkaListener = LocalhostPort(kafkaPort)
-      val zkConnect = LocalhostPort(zooKeeperPort)
+      val kafkaListener = LocalHostPort(kafkaPort)
+      val zkConnect = LocalHostPort(zooKeeperPort)
       val kafkaLogDir = createKafkaLogDir()
       val props = KafkaTestSuiteLike.buildKafkaProperties(
         kafkaListener,
@@ -126,7 +126,7 @@ private[this] object KafkaTestSuiteLike {
   }
 
   private def newRunningZooKeeper(port: Int): RunningZooKeeper =
-    RunningZooKeeper(LocalhostPort(port), createLogDir(ZooKeeperPrefix), createZooKeeperSnapDir())
+    RunningZooKeeper(LocalHostPort(port), createLogDir(ZooKeeperPrefix), createZooKeeperSnapDir())
 
   private def createKafkaLogDir(): Directory = createLogDir(KafkaPrefix)
 

@@ -15,6 +15,7 @@
 package com.chrism.net
 
 import java.{net => jn}
+
 import com.chrism.commons.FunTestSuite
 
 final class HostPortTest extends FunTestSuite {
@@ -26,7 +27,7 @@ final class HostPortTest extends FunTestSuite {
   }
 
   test("formatting localhost:port") {
-    val hp = LocalhostPort(666)
+    val hp = LocalHostPort(666)
     assert(hp.formatted === "localhost:666")
     assert(hp.toString === "localhost:666")
   }
@@ -37,7 +38,7 @@ final class HostPortTest extends FunTestSuite {
   }
 
   test("converting localhost:port to java.net.InetSocketAddress") {
-    val hp = LocalhostPort(666)
+    val hp = LocalHostPort(666)
     assert(hp.toInetSocketAddress === new jn.InetSocketAddress("localhost", 666))
   }
 
@@ -61,8 +62,8 @@ final class HostPortTest extends FunTestSuite {
 
   test("ordering multiple instances") {
     val hostPorts = Seq(
-      LocalhostPort(1095),
-      LocalhostPort(8080),
+      LocalHostPort(1095),
+      LocalHostPort(8080),
       HostPort("server1", 80),
       HostPort("server2", 8090),
       HostPort("a2", 80),
@@ -71,8 +72,8 @@ final class HostPortTest extends FunTestSuite {
     hostPorts.sorted should contain theSameElementsInOrderAs Seq(
       HostPort("a1", 9040),
       HostPort("a2", 80),
-      LocalhostPort(1095),
-      LocalhostPort(8080),
+      LocalHostPort(1095),
+      LocalHostPort(8080),
       HostPort("server1", 80),
       HostPort("server2", 8090),
     )

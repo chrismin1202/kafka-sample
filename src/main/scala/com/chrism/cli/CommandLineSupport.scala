@@ -12,32 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chrism.kafka
+package com.chrism.cli
 
-import java.{util => ju}
+trait CommandLineSupport {
 
-import io.circe.{Encoder, Printer}
-import org.apache.kafka.common.serialization.Serializer
+  def commandLineOptions: CommandLineOptions
 
-abstract class JsonSerializer[A: Encoder](printer: Printer = JsonSerializer.DefaultPrinter) extends Serializer[A] {
+  /** Override if there is validation logic, e.g., checking illegal argument combination.
+    * An appropriate exception should be thrown when there is an issue with options.
+    *
+    * @param parsedOptions an instance of [[ParsedOptions]] to validate
+    * @return the validated instance of [[ParsedOptions]]
+    */
+  def validate(parsedOptions: ParsedOptions): ParsedOptions = parsedOptions
 
-  override /* overridable */ def configure(configs: ju.Map[String, _], isKey: Boolean): Unit = {
-    // stubbed
-  }
+  final def parseCommandLineOptions(args: Array[String]): ParsedOptions =
+    validate(ParsedOptions(args, commandLineOptions))
 
-  override def serialize(topic: String, data: A): Array[Byte] = {
-    import io.circe.syntax._
-
-    printer.print(data.asJson).getBytes("UTF-8")
-  }
-
-  override /* overridable */ def close(): Unit = {
-    // stubbed
-  }
-}
-
-object JsonSerializer {
-
-  /** The default io.circe.Printer with null values dropped and no indentation */
-  val DefaultPrinter: Printer = Printer(true, "")
+  final def printHelp(): Unit =
+    parseCommandLineOptions(Array("--help")).printHelp()
 }
