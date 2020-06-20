@@ -49,12 +49,17 @@ object HostPort {
 
   def parseOrNone(hostPort: String): Option[HostPort] = HostPortRegex.findFirstMatchIn(hostPort).map(format)
 
-  def parseAll(hostPorts: String): Seq[HostPort] = HostPortRegex.findAllMatchIn(hostPorts).map(format).toSeq
+  def parseAll(hostPorts: String): Seq[HostPort] = parseAllToIterator(hostPorts).toSeq
+
+  def parseAllToSet(hostPorts: String): Set[HostPort] = parseAllToIterator(hostPorts).toSet
+
+  private[this] def parseAllToIterator(hostPorts: String): Iterator[HostPort] =
+    HostPortRegex.findAllMatchIn(hostPorts).map(format)
 
   private[this] def format(m: Regex.Match): HostPort = HostPort(m.group(1), m.group(2).toInt)
 }
 
-object LocalhostPort {
+object LocalHostPort {
 
   def apply(port: Int): HostPort = HostPort("localhost", port)
 }

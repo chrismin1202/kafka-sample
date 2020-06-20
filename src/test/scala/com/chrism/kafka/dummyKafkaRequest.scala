@@ -14,10 +14,11 @@
  */
 package com.chrism.kafka
 
+import com.chrism.kafka.serde.{JsonDeserializer, JsonSerializer}
 import io.circe.generic.extras.{semiauto, Configuration}
 import io.circe.{Decoder, Encoder}
 
-private[this] final case class DummyKafkaRequest(
+private[kafka] final case class DummyKafkaRequest(
   stringParam: String,
   nullableStringParam: Option[String],
   intParam: Int,
@@ -25,13 +26,13 @@ private[this] final case class DummyKafkaRequest(
   booleanParam: Boolean,
   nullableBooleanParam: Option[Boolean])
 
-private[this] object DummyKafkaRequest {
+private[kafka] object DummyKafkaRequest {
 
   implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames.withDefaults
   implicit val encoder: Encoder[DummyKafkaRequest] = semiauto.deriveConfiguredEncoder
   implicit val decoder: Decoder[DummyKafkaRequest] = semiauto.deriveConfiguredDecoder
 }
 
-private[this] object DummyKafkaRequestSerializer extends JsonSerializer[DummyKafkaRequest]
+private[kafka] object DummyKafkaRequestSerializer extends JsonSerializer[DummyKafkaRequest]
 
-private[this] object DummyKafkaRequestDeserializer extends JsonDeserializer[DummyKafkaRequest]
+private[kafka] object DummyKafkaRequestDeserializer extends JsonDeserializer[DummyKafkaRequest]
