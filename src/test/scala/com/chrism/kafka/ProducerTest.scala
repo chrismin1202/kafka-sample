@@ -15,7 +15,7 @@
 package com.chrism.kafka
 
 import com.chrism.commons.FunTestSuite
-import com.chrism.net.{HostPort, LocalhostPort}
+import com.chrism.net.{HostPort, LocalHostPort}
 import com.chrism.util.PropertiesBuilder
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -59,7 +59,7 @@ final class ProducerTest extends FunTestSuite {
   }
 
   test("adding multiple ProducerConfigs") {
-    val servers = Seq(LocalhostPort(999), LocalhostPort(9291), HostPort("host1", 921), HostPort("host2", 922))
+    val servers = Seq(LocalHostPort(999), LocalHostPort(9291), HostPort("host1", 921), HostPort("host2", 922))
     val configs = PropertiesBuilder()
       .addOrOverwrite(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, servers.mkString(","))
       .addOrOverwrite(ProducerConfig.MAX_BLOCK_MS_CONFIG, 100)
