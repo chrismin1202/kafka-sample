@@ -55,7 +55,7 @@ sbt clean compile test
 Future Works
 ------------
 
-Add Streams API example.
+Add driver for Streams app.
 
 License
 -------
