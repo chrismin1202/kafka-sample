@@ -17,7 +17,7 @@ import Dependencies._
 organization := "com.chrism"
 name := "kafka-sample"
 
-version := "0.0.1"
+version := "0.0.2"
 
 scalaVersion := "2.12.10"
 
@@ -49,11 +49,14 @@ libraryDependencies ++= Seq(
   CirceParser,
   CirceGenericExtras,
   KafkaClients,
+  KafkaStreams,
+  KafkaStreamsScala,
   Scalacheck % Test,
   Scalatest % Test,
   Commons4s % Test classifier "tests",
   ZooKeeper % Test,
   Kafka % Test,
+  KafkaStreamsTestUtils % Test,
 )
 
 val meta = "META.INF(.)*".r

@@ -52,11 +52,21 @@ object Dependencies {
     .exclude(JacksonGroupId, JacksonDatabindArtifactId)
     .exclude(Slf4jGroupId, Slf4jApiArtifactId)
 
+  val KafkaStreams: ModuleID = (KafkaGroupId % "kafka-streams" % KafkaVersion)
+    .exclude(JacksonGroupId, JacksonDatabindArtifactId)
+    .exclude(Slf4jGroupId, Slf4jApiArtifactId)
+
+  val KafkaStreamsScala: ModuleID = ("org.apache.kafka" %% "kafka-streams-scala" % "2.5.0")
+    .exclude(JacksonGroupId, JacksonDatabindArtifactId)
+    .exclude(Slf4jGroupId, Slf4jApiArtifactId)
+
   val Kafka: ModuleID = (KafkaGroupId %% "kafka" % KafkaVersion)
     .exclude(ZooKeeperGroupId, ZooKeeperArtifactId)
     .exclude(JacksonGroupId, JacksonDatabindArtifactId)
     .exclude(Slf4jGroupId, Slf4jApiArtifactId)
     .exclude("com.typesafe.scala-logging", "scala-logging")
+
+  val KafkaStreamsTestUtils: ModuleID = KafkaGroupId % "kafka-streams-test-utils" % KafkaVersion
 
   val Scalacheck: ModuleID = "org.scalacheck" %% "scalacheck" % ScalacheckVersion
   val Scalatest: ModuleID = "org.scalatest" %% "scalatest" % ScalatestVersion
